@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+require 'kajiki'
+require 'scsi'
+
+
+opts = Kajiki.preset_options(:server, {config: true})
+
+Kajiki.run(opts) do |cmd|
+  case cmd
+  when 'start'
+    SCSI::Config.load_config(opts[:config]) if opts[:config]
+    require 'scsi/server'
+    SCSI.logger.warn('SCSI server starting...')
+    Rack::Server.start({
+      app: SCSI::Server.new,
+      Host: opts[:address],
+      Port: opts[:port]
+    })
+  end
+end
