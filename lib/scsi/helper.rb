@@ -7,9 +7,9 @@ module SCSI
 
     def slash_keys
       return [
-        :user_name, :user_id,
-        :channel_name, :channel_id,
-        :team_domain, :team_id
+        :user_id, :user_name,
+        :channel_id, :channel_name,
+        :team_id, :team_domain
       ]
     end
 
@@ -17,24 +17,57 @@ module SCSI
       return nil unless params.class == Hash
       info = {}
       slash_keys.each { |k| info[k] = params[k] }
+      info[:text] = params[:text]
       return info
+    end
+
+    def create_attachments(data:, keys:)
+      attachments = []
+      i = 0
+      while i < keys.count do
+        a = keys[i]
+        b = keys[i + 1]
+        attachments << {fields: [
+          {title: a, value: data[a], short: true},
+          {title: b, value: data[b], short: true}
+        ]}
+        i += 2
+      end
+      return attachments
+    end
+
+    def attachments_from_text(text)
+      attachments = []
+      text.scan(/<(.*?)>/) do |m|
+        case m[0][0]
+        when '#'
+          keys = [:channel_id, :channel_name]
+        when '@'
+          keys = [:user_id, :user_name]
+        when '!'
+          keys = [:special_command, :label]
+        else
+          keys = [:link, :label]
+        end
+        values = m[0].split('|')
+        data = {keys[0] => values[0][1..-1], keys[1] => values[1]}
+        attachments << create_attachments(data: data, keys: keys)[0]
+      end
+      return attachments
     end
 
     def format_info(info)
       attachments = []
-      i = 0
-      while i < slash_keys.count do
-        a = slash_keys[i]
-        b = slash_keys[i + 1]
-        attachments << {fields: [
-          {title: a, value: info[a], short: true},
-          {title: b, value: info[b], short: true}
-        ]}
-        i += 2
+      q = ''
+      attachments = attachments_from_text(info[:text]) if info[:text]
+      if attachments.empty?
+        attachments = create_attachments(data: info, keys: slash_keys)
+      else
+        q = " ?>> `#{info[:text]}`"
       end
       return {
         response_type: "ephemeral",
-        text: "SCSI: Slash Command Slack Info v#{SCSI::Version}",
+        text: "SCSI: Slash Command Slack Info v#{SCSI::Version}" + q,
         attachments: attachments
       }
     end
