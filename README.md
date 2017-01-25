@@ -1,5 +1,7 @@
 # scsi
 
+[![Gem Version](https://badge.fury.io/rb/scsi.svg)](https://badge.fury.io/rb/scsi) [![Code Climate](https://codeclimate.com/github/propelfuels/scsi/badges/gpa.svg)](https://codeclimate.com/github/propelfuels/scsi) [![security](https://hakiri.io/github/propelfuels/scsi/master.svg)](https://hakiri.io/github/propelfuels/scsi/master)
+
 A Ruby server for receiving Slack Slash Command and responding with Slack info.
 
 ## Requirements
@@ -41,7 +43,7 @@ end
 
 ### Run
 
-In Slack, add a [Slash Command](https://my.slack.com/apps/A0F82E8CA-slash-commands) configuration. Set the URL to wherever you're exposing the SCSI server at. (Hint: setup an SSL front; Slack requires your server to talk HTTPS. E.g., NGINX reverse proxy, [Cloudflare](https://www.cloudflare.com/ssl/).)
+In Slack, add a [Slash Command](https://my.slack.com/apps/A0F82E8CA-slash-commands) configuration. Set the URL to wherever you're exposing the SCSI server at. (Hint: setup an SSL front; Slack requires your server to talk HTTPS. E.g., NGINX reverse proxy, [Cloudflare](https://www.cloudflare.com/ssl/).) Also, turn on the "Escape channels, users, and links" setting.
 
 The minimum to start the SCSI server:
 
