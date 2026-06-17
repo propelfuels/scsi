@@ -1,5 +1,7 @@
 # scsi
 
+**THIS REPO IS ARCHIVED AND NO LONGER MAINTAINED**
+
 [![Gem Version](https://badge.fury.io/rb/scsi.svg)](https://badge.fury.io/rb/scsi) [![Code Climate](https://codeclimate.com/github/propelfuels/scsi/badges/gpa.svg)](https://codeclimate.com/github/propelfuels/scsi) [![security](https://hakiri.io/github/propelfuels/scsi/master.svg)](https://hakiri.io/github/propelfuels/scsi/master)
 
 A Ruby server for receiving Slack Slash Command and responding with Slack info.
